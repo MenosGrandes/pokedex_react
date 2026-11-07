@@ -5,10 +5,7 @@ describe("PokemonCard", () => {
   const pokemon = {
     id: 1,
     name: "bulbasaur",
-    types: [
-      { type: { name: "grass" } },
-      { type: { name: "poison" } },
-    ],
+    types: [{ type: { name: "grass" } }, { type: { name: "poison" } }],
     sprites: {
       front_default: "https://example.com/bulbasaur.png",
       other: {
@@ -22,8 +19,7 @@ describe("PokemonCard", () => {
   it("renders the pokemon name", () => {
     render(<PokemonCard pokemon={pokemon} />);
 
-    expect(screen.getByRole("heading", { name: "Bulbasaur" }))
-      .toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Bulbasaur" })).toBeInTheDocument();
   });
 
   it("renders the pokemon id with leading zeros", () => {
@@ -44,9 +40,6 @@ describe("PokemonCard", () => {
 
     const image = screen.getByRole("img", { name: "Bulbasaur" });
 
-    expect(image).toHaveAttribute(
-      "src",
-      "https://example.com/bulbasaur-official.png"
-    );
+    expect(image).toHaveAttribute("src", "https://example.com/bulbasaur-official.png");
   });
 });

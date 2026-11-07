@@ -4,10 +4,7 @@ import PokemonType from "../components/PokemonType";
 
 describe("PokemonType", () => {
   it("renders all pokemon types", () => {
-    const types = [
-      { type: { name: "grass" } },
-      { type: { name: "poison" } },
-    ];
+    const types = [{ type: { name: "grass" } }, { type: { name: "poison" } }];
 
     render(<PokemonType types={types} />);
 

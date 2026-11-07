@@ -1,7 +1,7 @@
 const API_URL = "https://pokeapi.co/api/v2";
 
 export async function fetchPokemonIndex(signal) {
-  const response = await fetch(`${API_URL}/pokemon?limit=2000&offset=0`, {
+  const response = await fetch(`${API_URL}/pokemon?limit=20000&offset=0`, {
     signal,
   });
 

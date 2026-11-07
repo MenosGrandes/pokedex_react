@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
-
 import { fetchPokemonDetails } from "../api/pokemonApi";
-
 import PokemonCard from "./PokemonCard";
 
 function PokemonGrid({ pokemon }) {
   const [pokemonDetails, setPokemonDetails] = useState([]);
-
-  const [status, setStatus] = useState("loading");
-
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -31,9 +27,7 @@ function PokemonGrid({ pokemon }) {
         }
 
         console.error(error);
-
         setError("Unable to load Pokémon details.");
-
         setStatus("error");
       }
     }
