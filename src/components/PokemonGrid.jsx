@@ -41,9 +41,11 @@ function PokemonGrid({ pokemon }) {
 
   if (status === "loading") {
     return (
-      <div className="pokemon-grid">
+      <div className="grid grid-cols-4 gap-6 w-full">
         {pokemon.map((pokemon) => (
-          <div className="pokemon-card skeleton" key={pokemon.name}>
+          <div className="relative min-w-0 overflow-hidden bg-white border border-[#e5e7eb] rounded-[16px] shadow-[0_2px_5px_rgba(0,0,0,0.05)] transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.1)]
+ flex items-center justify-center min-h-[300px] text-[#9ca3af] animate-pulse
+" key={pokemon.name}>
             Loading...
           </div>
         ))}
@@ -52,11 +54,11 @@ function PokemonGrid({ pokemon }) {
   }
 
   if (status === "error") {
-    return <div className="error">{error}</div>;
+    return <div className="py-[60px] px-5 text-center text-[#dc2626]">{error}</div>;
   }
 
   return (
-    <section className="pokemon-grid" aria-label="Pokémon">
+    <section className="grid grid-cols-4 gap-6 w-full" aria-label="Pokémon">
       {pokemonDetails.map((pokemon) => (
         <PokemonCard key={pokemon.id} pokemon={pokemon} />
       ))}

@@ -1,11 +1,11 @@
 export default function PokemonCard({ image, name }) {
   return (
     <>
-      <div className="pokemon-image-container">
+      <div className="flex items-center justify-center w-full aspect-square bg-[#f3f4f6]">
         {image ? (
-          <img className="pokemon-image" src={image} alt={name} loading="lazy" />
+          <img className="block w-[85%] h-[85%] object-contain" src={image} alt={name} loading="lazy" />
         ) : (
-          <div className="no-image">No image</div>
+          <div className="text-[#9ca3af]">No image</div>
         )}
       </div>
     </>

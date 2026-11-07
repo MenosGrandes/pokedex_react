@@ -6,7 +6,7 @@ import AppReact19 from "./components/react19/App";
 
 function App() {
   return (
-    <AppReact19 />
+    <AppReact18 />
   );
 }
 
