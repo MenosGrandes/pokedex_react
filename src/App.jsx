@@ -1,12 +1,28 @@
 
 import "./App.css";
 
-import AppReact18 from "./components/react18/App";
-import AppReact19 from "./components/react19/App";
+
+import { ErrorBoundary } from "react-error-boundary";
+import { Error } from "./components/Error";
+import { Loading } from "./components/Loading";
+import { Suspense, useMemo } from "react";
+import { PokemonDashboard } from "./components/PokemonDashboard";
+import { fetchPokemonIndex } from "./api/pokemonApi";
 
 function App() {
+  const pokemonPromise = useMemo(() => fetchPokemonIndex(), []
+  );
+
   return (
-    <AppReact19 />
+    <ErrorBoundary
+      fallbackRender={() => (
+        <Error error="Unable to load Pokémon. Please try again." className="container" />
+      )}
+    >
+      <Suspense fallback={<Loading className={"status"} string={"Loading Pokemon..."} />}>
+        <PokemonDashboard pokemonPromise={pokemonPromise} />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

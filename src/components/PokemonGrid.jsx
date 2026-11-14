@@ -1,64 +1,96 @@
-import { useEffect, useState } from "react";
+
+import { useEffect, useRef } from "react";
 import { fetchPokemonDetails } from "../api/pokemonApi";
 import PokemonCard from "./PokemonCard";
+import { ErrorBoundary } from "react-error-boundary";
+import { Error } from "./Error";
+import { Loading } from "./Loading";
 
-function PokemonGrid({ pokemon }) {
-  const [pokemonDetails, setPokemonDetails] = useState([]);
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState("loading");
+function PokemonGrid({ pokemon, state, dispatch }) {
+  const requestCounter = useRef(0);
 
   useEffect(() => {
     const controller = new AbortController();
+    let active = true;
+
+    const requestId = ++requestCounter.current;
 
     async function loadDetails() {
-      try {
-        setStatus("loading");
-        setError(null);
+      dispatch({
+        type: "FETCH_START",
+        payload: requestId
+      });
 
+      try {
         const details = await Promise.all(
-          pokemon.map((pokemon) => fetchPokemonDetails(pokemon.url, controller.signal)),
+          pokemon.map(({ url }) =>
+            fetchPokemonDetails(url, controller.signal)
+          )
         );
 
-        setPokemonDetails(details);
-        setStatus("success");
-      } catch (error) {
-        if (error.name === "AbortError") {
-          return;
-        }
+        if (!active) return;
 
-        console.error(error);
-        setError("Unable to load Pokémon details.");
-        setStatus("error");
+        dispatch({
+          type: "FETCH_SUCCESS",
+          payload: {
+            requestId,
+            pokemon: details
+          }
+        });
+
+      } catch (error) {
+        if (!active || error.name === "AbortError") return;
+
+        dispatch({
+          type: "FETCH_ERROR",
+          payload: {
+            requestId,
+            error: "Unable to load Pokémon details."
+          }
+        });
       }
     }
 
     loadDetails();
 
     return () => {
+      active = false;
       controller.abort();
     };
-  }, [pokemon]);
 
-  if (status === "loading") {
+  }, [pokemon, dispatch]);
+
+  if (state.status === "loading") {
     return (
       <div className="pokemon-grid">
-        {pokemon.map((pokemon) => (
-          <div className="pokemon-card skeleton" key={pokemon.name}>
-            Loading...
-          </div>
+        {pokemon.map(({ name }) => (
+          <Loading className={"pokemon-card skeleton"} key={name} string={" Loading..."} />
         ))}
       </div>
     );
   }
 
-  if (status === "error") {
-    return <div className="error">{error}</div>;
+  if (state.status === "error") {
+    return <ErrorBoundary
+      fallbackRender={() => (
+        <Error error={state.error} className="error" />
+      )}
+    ></ErrorBoundary>
   }
 
   return (
     <section className="pokemon-grid" aria-label="Pokémon">
-      {pokemonDetails.map((pokemon) => (
-        <PokemonCard key={pokemon.id} pokemon={pokemon} />
+      {state.pokemon.map(pokemon => (
+        <PokemonCard
+          key={pokemon.id}
+          pokemon={pokemon}
+          onSelect={() =>
+            dispatch({
+              type: "SELECT_POKEMON",
+              payload: pokemon
+            })
+          }
+        />
       ))}
     </section>
   );
