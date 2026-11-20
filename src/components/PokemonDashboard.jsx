@@ -4,7 +4,6 @@ import PokemonSearch from "./PokemonSearch";
 import { usePokemonPagination } from "../../hooks/usePokemonPagination";
 import { pokemonReducer } from "../../state/pokemonReducer";
 import { initialState } from "../../state/initialState";
-import PokemonDetails from "./PokemonDetails";
 import PokemonGrid from "./PokemonGrid";
 import Pagination from "./Pagination";
 
@@ -38,13 +37,10 @@ export function PokemonDashboard({ pokemonPromise }) {
                 {filteredPokemon.length} Pokémon found
             </p>
 
-            {state.selectedPokemon ? (
-                <PokemonDetails
-                    pokemon={state.selectedPokemon}
-                    onClose={() => dispatch({ type: "CLOSE_DETAILS" })}
-                />
-            ) : filteredPokemon.length === 0 ? (
-                <div className="empty">No Pokémon found.</div>
+            {filteredPokemon.length === 0 ? (
+                <div className="empty">
+                    No Pokémon found.
+                </div>
             ) : (
                 <>
                     <PokemonGrid

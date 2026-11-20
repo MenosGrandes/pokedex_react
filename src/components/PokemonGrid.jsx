@@ -81,16 +81,7 @@ function PokemonGrid({ pokemon, state, dispatch }) {
   return (
     <section className="pokemon-grid" aria-label="Pokémon">
       {state.pokemon.map(pokemon => (
-        <PokemonCard
-          key={pokemon.id}
-          pokemon={pokemon}
-          onSelect={() =>
-            dispatch({
-              type: "SELECT_POKEMON",
-              payload: pokemon
-            })
-          }
-        />
+        <PokemonCard key={pokemon.id} pokemon={pokemon} />
       ))}
     </section>
   );

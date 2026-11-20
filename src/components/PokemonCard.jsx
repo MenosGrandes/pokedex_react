@@ -1,3 +1,6 @@
+
+import { Link } from "react-router";
+
 import PokemonType from "./PokemonType";
 import PokemonImage from "./PokemonImage";
 
@@ -8,10 +11,7 @@ function formatPokemonName(name) {
     .join(" ");
 }
 
-export default function PokemonCard({
-  pokemon,
-  onSelect
-}) {
+export default function PokemonCard({ pokemon }) {
   const image =
     pokemon.sprites?.other?.["official-artwork"]?.front_default ||
     pokemon.sprites?.front_default;
@@ -19,23 +19,25 @@ export default function PokemonCard({
   const pokemonName = formatPokemonName(pokemon.name);
 
   return (
-    <article
+    <Link
+      to={`/pokemon/${pokemon.id}`}
       className="pokemon-card"
-      onClick={onSelect}
     >
-      <PokemonImage image={image} name={pokemonName} />
+      <article className="pokemon-card">
+        <PokemonImage image={image} name={pokemonName} />
 
-      <div className="pokemon-info">
-        <span className="pokemon-id">
-          #{String(pokemon.id).padStart(4, "0")}
-        </span>
+        <div className="pokemon-info">
+          <span className="pokemon-id">
+            #{String(pokemon.id).padStart(4, "0")}
+          </span>
 
-        <h2 className="pokemon-name">
-          {pokemonName}
-        </h2>
+          <h2 className="pokemon-name">
+            {pokemonName}
+          </h2>
 
-        <PokemonType types={pokemon.types} />
-      </div>
-    </article>
+          <PokemonType types={pokemon.types} />
+        </div>
+      </article>
+    </Link>
   );
 }

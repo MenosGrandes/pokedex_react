@@ -51,6 +51,11 @@
   font-size: 14px;
 }
 
+
+.pokemon-card-link {
+  text-decoration: none;
+  color: inherit;
+}
 /*
  * GRID
  */
