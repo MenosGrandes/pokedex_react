@@ -1,3 +1,4 @@
+import { useFavorites } from "../context/FavoriteContext";
 import PokemonType from "./PokemonType";
 
 export default function PokemonDetails({
@@ -7,12 +8,22 @@ export default function PokemonDetails({
     const image =
         pokemon.sprites?.other?.["official-artwork"]?.front_default;
 
+    const { toggleFavorite, isFavorite } = useFavorites();
+
+    const favorite = isFavorite(pokemon.id);
+
+
     return (
         <section className="pokemon-details">
             <button onClick={onClose}>
                 ← Back to Pokédex
             </button>
-
+            <button
+                onClick={() => toggleFavorite(pokemon)}
+                aria-label="Toggle favorite"
+            >
+                {favorite ? "❤️" : "🤍"}
+            </button>
             <h2>
                 {pokemon.name.toUpperCase()}
             </h2>

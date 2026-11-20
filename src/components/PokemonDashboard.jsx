@@ -6,9 +6,13 @@ import { pokemonReducer } from "../../state/pokemonReducer";
 import { initialState } from "../../state/initialState";
 import PokemonGrid from "./PokemonGrid";
 import Pagination from "./Pagination";
+import { useFavorites } from "../context/FavoriteContext";
+import { Link } from "react-router";
 
 
 export function PokemonDashboard({ pokemonPromise }) {
+    const { favorites } = useFavorites();
+
     const pokemonIndex = use(pokemonPromise);
 
     const [state, dispatch] = useReducer(
@@ -28,6 +32,10 @@ export function PokemonDashboard({ pokemonPromise }) {
 
     return (
         <main className="container">
+            <Link to="/favorites" className="back-button">
+                Favorites ({favorites.length})
+            </Link>
+
             <PokemonSearch
                 search={state.search}
                 dispatch={dispatch}

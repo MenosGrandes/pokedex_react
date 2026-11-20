@@ -15,6 +15,8 @@ import PokemonDetails from "./components/PokemonDetails";
 import { Loading } from "./components/Loading";
 import { fetchPokemonIndex, fetchPokemonDetails } from "./api/pokemonApi";
 import { Suspense, useMemo } from "react";
+import { FavoritesProvider } from "./context/FavoriteContext";
+import FavoritesPage from "./components/FavoritesPage";
 function Layout() {
   return <Outlet />;
 }
@@ -103,6 +105,10 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loading />,
       },
       {
+        path: "favorites",
+        element: <FavoritesPage />,
+      },
+      {
         path: "*",
         element: <NotFoundPage />,
       },
@@ -110,8 +116,12 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
-  return <RouterProvider router={router} />;
-}
 
+function App() {
+  return (
+    <FavoritesProvider>
+      <RouterProvider router={router} />
+    </FavoritesProvider>
+  );
+}
 export default App;

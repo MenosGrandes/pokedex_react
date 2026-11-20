@@ -3,6 +3,7 @@ import { Link } from "react-router";
 
 import PokemonType from "./PokemonType";
 import PokemonImage from "./PokemonImage";
+import { useFavorites } from "../context/FavoriteContext";
 
 function formatPokemonName(name) {
   return name
@@ -12,6 +13,11 @@ function formatPokemonName(name) {
 }
 
 export default function PokemonCard({ pokemon }) {
+  const { _toggleFavorite, isFavorite } = useFavorites();
+
+  const favorite = isFavorite(pokemon.id);
+
+
   const image =
     pokemon.sprites?.other?.["official-artwork"]?.front_default ||
     pokemon.sprites?.front_default;
@@ -34,9 +40,12 @@ export default function PokemonCard({ pokemon }) {
           <h2 className="pokemon-name">
             {pokemonName}
           </h2>
-
+          <h2>
+            {favorite ? "❤️" : "🤍"}
+          </h2>
           <PokemonType types={pokemon.types} />
         </div>
+
       </article>
     </Link>
   );
